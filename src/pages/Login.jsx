@@ -18,6 +18,26 @@ function Login() {
     <LoginLayout>
       <Logo />
       <Heading as="h4">Log in to your account</Heading>
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          backgroundColor: "white",
+          color: "black",
+          padding: "5px",
+          borderRadius: "10px",
+        }}
+      >
+        <span>Demo user?</span>{" "}
+        <div style={{ display: "flex", gap: "20px" }}>
+          <div>
+            Email: <span style={{ fontWeight: "bolder" }}>test@gmail.com</span>
+          </div>{" "}
+          <div>
+            password: <span style={{ fontWeight: "bolder" }}>123456</span>
+          </div>
+        </div>
+      </div>
       <LoginForm />
     </LoginLayout>
   );

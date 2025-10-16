@@ -44,6 +44,11 @@ export async function logout() {
 }
 
 export async function updateCurrentUser({ password, fullName, avatar }) {
+  const user = await getCurrentUser();
+  console.log(user);
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
   // 1. Update password OR fullName
   let updateData;
   if (password) updateData = { password };

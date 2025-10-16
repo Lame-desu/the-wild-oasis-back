@@ -1,6 +1,11 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 import { PAGE_SIZE } from "../utils/constants";
+import { getCurrentUser } from "./apiAuth";
+
+
+
+
 
 export async function getBookings({ filter, sortBy, page }) {
   let query = supabase
@@ -105,6 +110,12 @@ export async function getStaysTodayActivity() {
 }
 
 export async function updateBooking(id, obj) {
+  const user = await getCurrentUser();
+
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
+
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)
@@ -120,6 +131,12 @@ export async function updateBooking(id, obj) {
 }
 
 export async function deleteBooking(id) {
+    const user = await getCurrentUser();
+
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
+
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 

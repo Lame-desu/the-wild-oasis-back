@@ -1,5 +1,7 @@
 import supabase, { supabaseUrl } from "./supabase";
 
+import { getCurrentUser } from "./apiAuth";
+
 export async function getCabins() {
   const { data, error } = await supabase.from("cabins").select("*");
 
@@ -12,6 +14,12 @@ export async function getCabins() {
 }
 
 export async function createEditCabin(newCabin, id) {
+  const user = await getCurrentUser();
+
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
+
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
@@ -58,6 +66,12 @@ export async function createEditCabin(newCabin, id) {
 }
 
 export async function deleteCabin(id) {
+  const user = await getCurrentUser();
+
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
+
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
 
   if (error) {

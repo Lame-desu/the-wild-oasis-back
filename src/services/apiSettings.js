@@ -1,4 +1,5 @@
 import supabase from "./supabase";
+import { getCurrentUser } from "./apiAuth";
 
 export async function getSettings() {
   const { data, error } = await supabase.from("settings").select("*").single();
@@ -12,6 +13,12 @@ export async function getSettings() {
 
 // We expect a newSetting object that looks like {setting: newValue}
 export async function updateSetting(newSetting) {
+  const user = await getCurrentUser();
+  console.log(user);
+  if (user?.email === "test@gmail.com") {
+    throw new Error("Demo user cannot modify data");
+  }
+
   const { data, error } = await supabase
     .from("settings")
     .update(newSetting)
@@ -23,5 +30,6 @@ export async function updateSetting(newSetting) {
     console.error(error);
     throw new Error("Settings could not be updated");
   }
+  console.log("updating");
   return data;
 }
